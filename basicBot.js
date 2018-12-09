@@ -1486,6 +1486,21 @@
             basicBot.room.autodisableInterval = setInterval(function() {
                 basicBot.room.autodisableFunc();
             }, 60 * 60 * 1000);
+            basicBot.room.autorouletteInterval = setInterval(function() {
+                basicBot.room.autorouletteFunc();
+            }, 30 * 60 * 1000);
+            basicBot.room.naktis = setInterval(function () {
+            var naktis = new Date();
+            if (naktis.getHours() === 1 && naktis.getMinutes() === 30 && naktis.getSeconds() === 0) {
+             API.sendChat('!autoroulette');
+                }
+           }, 1000);
+            basicBot.room.rytas = setInterval(function () {
+            var rytas = new Date();
+            if (rytas.getHours() === 12 && rytas.getMinutes() === 0 && rytas.getSeconds() === 0) {
+             API.sendChat('!autoroulette');
+            }
+           }, 1000);
             basicBot.loggedInID = API.getUser().id;
             basicBot.status = true;
             API.sendChat('/cap ' + basicBot.settings.startupCap);
