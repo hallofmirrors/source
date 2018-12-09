@@ -339,6 +339,13 @@
             afkInterval: null,
             //autoskip: false,
             autoskipTimer: null,
+            autorouletteInterval: null,
+            autorouletteFunc: function() {
+                if (basicBot.status && basicBot.settings.autoroulette) {
+                    basicBot.room.roulette.startRoulette();
+                    return;
+                }
+            },
             autodisableInterval: null,
             autodisableFunc: function() {
                 if (basicBot.status && basicBot.settings.autodisable) {
