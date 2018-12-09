@@ -276,6 +276,7 @@
             blacklistEnabled: true,
             lockdownEnabled: false,
             lockGuard: false,
+            autoroulette: true,
             maximumLocktime: 10,
             cycleGuard: true,
             maximumCycletime: 10,
