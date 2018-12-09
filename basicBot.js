@@ -1760,23 +1760,76 @@
                         var launchT = basicBot.room.roomstats.launchTime;
                         var durationOnline = Date.now() - launchT;
 
-                        if (inactivity == durationOnline) {
-                            API.sendChat(subChat(basicBot.chat.inactivelonger, {
-                                botname: basicBot.settings.botName,
-                                name: chat.un,
-                                username: name
-                            }));
-                        } else {
-                            API.sendChat(subChat(basicBot.chat.inactivefor, {
-                                name: chat.un,
-                                username: name,
-                                time: time
-                            }));
+                                                if (inactivity == durationOnline) {
+                            API.sendChat(subChat(basicBot.chat.inactivelonger, {botname: basicBot.settings.botName, name: chat.un, username: name}));
+                        } 
+                        else {
+                            API.sendChat(subChat(basicBot.chat.inactivefor, {name: chat.un, username: name, time: time}));
                         }
                     }
                 }
             },
 
+            autoroulette: {
+                command: 'autoroulette',
+                rank: 'manager',
+                type: 'exact',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        if (basicBot.settings.autoroulette) {
+                            basicBot.settings.autoroulette = !basicBot.settings.autoroulette;
+                            return API.sendChat(subChat(basicBot.chat.toggleoff, {
+                                name: chat.un,
+                                'function': basicBot.chat.autoroulette
+                            }));
+                        } 
+                        else {
+                            basicBot.settings.autoroulette = !basicBot.settings.autoroulette;
+                            return API.sendChat(subChat(basicBot.chat.toggleon, {name: chat.un, 'function': basicBot.chat.autoroulette}));
+                        }
+
+                    }
+                }
+            },
+
+            stoprouletteCommand: {
+                command: 'stoproulette', // The command to be called. With the standard command literal this would be: !bacon
+                rank: 'cohost', // Minimum user permission to use the command
+                type: 'exact', // Specify if it can accept variables or not (if so, these have to be handled yourself through the chat.message
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length)
+                        return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat))
+                        return void(0);
+                    else {
+                        API.sendChat('/me Ruletė sustabdyta!');
+                        clearTimeout(bot.room.roulette.countdown);
+                        basicBot.room.roulette.rouletteStatus = false;
+                    }
+                }
+            },
+
+            shushCommand: {
+                command: 'shush',
+                rank: 'user',
+                type: 'startsWith',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length)
+                        return;
+                    if (!bot.commands.executable(this.rank, chat))
+                        return;
+                    else {
+                        var msg = chat.message;
+                        var space = msg.indexOf(' ');
+                        var name = msg.substring(space + 2);
+                        API.sendChat('@' + name + ' http://imgur.com/abxxwMo.png');
+
+                    }
+                }
+            },
+         
             autodisableCommand: {
                 command: 'autodisable',
                 rank: 'bouncer',
